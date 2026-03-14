@@ -54,7 +54,7 @@ final class PrivilegedExecutor {
         let username = NSUserName()
         // 임시 파일에 sudoers 규칙 기록 (root 불필요)
         let tmpPath = "/tmp/memory-rescue-\(UUID().uuidString)"
-        let rule    = "\(username) ALL=(ALL) NOPASSWD: /usr/bin/purge"
+        let rule    = "\(username) ALL=(ALL) NOPASSWD: /usr/sbin/purge"
         guard (try? rule.write(toFile: tmpPath, atomically: true, encoding: .utf8)) != nil
         else { return false }
 
