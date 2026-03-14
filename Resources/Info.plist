@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>jenaMemory</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.jenalab.jenamemory</string>
+    <key>CFBundleVersion</key>
+    <string>1.0.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleExecutable</key>
+    <string>jenaMemory</string>
+    <key>CFBundleIconFile</key>
+    <string>jenaMemory</string>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <!-- Dock에 아이콘 숨김 + 순수 메뉴바 앱으로 동작 -->
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSAppleScriptEnabled</key>
+    <true/>
+</dict>
+</plist>
