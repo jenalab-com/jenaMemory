@@ -30,6 +30,17 @@ final class SettingsWindowController: NSWindowController {
 
     static let shared = SettingsWindowController()
 
+    // General section (launch at login)
+    private let generalSectionLabel = NSTextField(labelWithString: "")
+    private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "", target: nil, action: nil)
+    private let approvalLabel: NSTextField = {
+        let l = NSTextField(labelWithString: "")
+        l.font = .systemFont(ofSize: 11)
+        l.textColor = .secondaryLabelColor
+        return l
+    }()
+    private let openLoginItemsBtn = NSButton(title: "", target: nil, action: nil)
+
     // Auto-optimize section
     private let sectionLabel    = NSTextField(labelWithString: "")
     private let enableCheckbox  = NSButton(checkboxWithTitle: "", target: nil, action: nil)
@@ -51,7 +62,7 @@ final class SettingsWindowController: NSWindowController {
 
     private init() {
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 220),
+            contentRect: NSRect(x: 0, y: 0, width: 380, height: 300),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
@@ -68,7 +79,9 @@ final class SettingsWindowController: NSWindowController {
     private func buildUI() {
         guard let cv = window?.contentView else { return }
 
-        let views: [NSView] = [sectionLabel, enableCheckbox, thresholdLabel,
+        let views: [NSView] = [generalSectionLabel, launchAtLoginCheckbox, approvalLabel,
+                               openLoginItemsBtn,
+                               sectionLabel, enableCheckbox, thresholdLabel,
                                thresholdField, mbLabel, languageSectionLabel,
                                languagePopup, saveBtn]
         views.forEach {
@@ -80,6 +93,19 @@ final class SettingsWindowController: NSWindowController {
         separator.boxType = .separator
         separator.translatesAutoresizingMaskIntoConstraints = false
         cv.addSubview(separator)
+
+        let topSeparator = NSBox()
+        topSeparator.boxType = .separator
+        topSeparator.translatesAutoresizingMaskIntoConstraints = false
+        cv.addSubview(topSeparator)
+
+        // Launch at login
+        launchAtLoginCheckbox.target = self
+        launchAtLoginCheckbox.action = #selector(toggleLaunchAtLogin)
+        openLoginItemsBtn.bezelStyle = .inline
+        openLoginItemsBtn.controlSize = .small
+        openLoginItemsBtn.target = self
+        openLoginItemsBtn.action = #selector(openLoginItems)
 
         // Checkbox
         enableCheckbox.target = self
@@ -101,12 +127,31 @@ final class SettingsWindowController: NSWindowController {
         saveBtn.action = #selector(save)
 
         // Font
+        generalSectionLabel.font = .boldSystemFont(ofSize: 13)
         sectionLabel.font = .boldSystemFont(ofSize: 13)
         languageSectionLabel.font = .boldSystemFont(ofSize: 13)
 
         NSLayoutConstraint.activate([
+            // General section
+            generalSectionLabel.topAnchor.constraint(equalTo: cv.topAnchor, constant: 20),
+            generalSectionLabel.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
+
+            launchAtLoginCheckbox.topAnchor.constraint(equalTo: generalSectionLabel.bottomAnchor, constant: 10),
+            launchAtLoginCheckbox.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
+
+            approvalLabel.topAnchor.constraint(equalTo: launchAtLoginCheckbox.bottomAnchor, constant: 4),
+            approvalLabel.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 38),
+            approvalLabel.trailingAnchor.constraint(lessThanOrEqualTo: openLoginItemsBtn.leadingAnchor, constant: -6),
+
+            openLoginItemsBtn.centerYAnchor.constraint(equalTo: approvalLabel.centerYAnchor),
+            openLoginItemsBtn.trailingAnchor.constraint(equalTo: cv.trailingAnchor, constant: -20),
+
+            topSeparator.topAnchor.constraint(equalTo: approvalLabel.bottomAnchor, constant: 12),
+            topSeparator.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
+            topSeparator.trailingAnchor.constraint(equalTo: cv.trailingAnchor, constant: -20),
+
             // Auto-optimize section
-            sectionLabel.topAnchor.constraint(equalTo: cv.topAnchor, constant: 20),
+            sectionLabel.topAnchor.constraint(equalTo: topSeparator.bottomAnchor, constant: 14),
             sectionLabel.leadingAnchor.constraint(equalTo: cv.leadingAnchor, constant: 20),
 
             enableCheckbox.topAnchor.constraint(equalTo: sectionLabel.bottomAnchor, constant: 10),
@@ -146,6 +191,10 @@ final class SettingsWindowController: NSWindowController {
 
     private func updateLabels() {
         window?.title                    = L.settingsTitle
+        generalSectionLabel.stringValue  = L.generalSection
+        launchAtLoginCheckbox.title      = L.launchAtLogin
+        approvalLabel.stringValue        = L.launchAtLoginApproval
+        openLoginItemsBtn.title          = L.openLoginItems
         sectionLabel.stringValue         = L.autoOptimizeSection
         enableCheckbox.title             = L.enable
         thresholdLabel.stringValue       = L.thresholdLabel + ":"
@@ -155,6 +204,7 @@ final class SettingsWindowController: NSWindowController {
 
     private func loadSettings() {
         updateLabels()
+        refreshLaunchAtLoginState()
         enableCheckbox.state      = Settings.autoOptimizeEnabled ? .on : .off
         thresholdField.stringValue = "\(Settings.autoOptimizeThresholdMB)"
         thresholdField.isEnabled  = Settings.autoOptimizeEnabled
@@ -168,6 +218,26 @@ final class SettingsWindowController: NSWindowController {
 
     @objc private func toggleEnable() {
         thresholdField.isEnabled = enableCheckbox.state == .on
+    }
+
+    /// 체크박스는 실제 시스템 등록 상태를 비춘다. 승인 대기 중이면 안내 문구를 보여준다.
+    private func refreshLaunchAtLoginState() {
+        let supported = LaunchAtLogin.isSupported
+        launchAtLoginCheckbox.isEnabled = supported
+        launchAtLoginCheckbox.state     = (LaunchAtLogin.isEnabled || LaunchAtLogin.requiresApproval) ? .on : .off
+        let needsApproval = supported && LaunchAtLogin.requiresApproval
+        approvalLabel.isHidden     = !needsApproval
+        openLoginItemsBtn.isHidden = !needsApproval
+    }
+
+    /// 자동 실행은 저장 버튼을 기다리지 않고 즉시 반영 — 시스템 설정과 어긋나는 시간을 줄이기 위해
+    @objc private func toggleLaunchAtLogin() {
+        LaunchAtLogin.set(launchAtLoginCheckbox.state == .on)
+        refreshLaunchAtLoginState()
+    }
+
+    @objc private func openLoginItems() {
+        LaunchAtLogin.openSystemSettings()
     }
 
     @objc private func save() {

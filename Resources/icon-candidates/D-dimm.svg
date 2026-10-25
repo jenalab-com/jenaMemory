@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <mask id="rear-clearance" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="white"/>
+      <rect x="192" y="202" width="656" height="566" rx="126" fill="black"/>
+    </mask>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="188" fill="#14243A"/>
+  <g transform="translate(36 -27)">
+    <g mask="url(#rear-clearance)">
+      <g transform="translate(-45 110) rotate(12 520 485)">
+        <rect x="244" y="254" width="552" height="462" rx="42" fill="white"/>
+      </g>
+    </g>
+    <path d="M500 280 H722 A48 48 0 0 1 770 328 V642 A48 48 0 0 1 722 690 H318 A48 48 0 0 1 270 642 V555"
+          fill="none" stroke="white" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <title>jenaMemory D — horizontal RAM stick</title>
+  <rect x="340" y="420" width="360" height="130" rx="22" fill="white"/>
+  <rect x="372" y="452" width="66" height="66" rx="10" fill="#14243A"/>
+  <rect x="454" y="452" width="66" height="66" rx="10" fill="#14243A"/>
+  <rect x="536" y="452" width="66" height="66" rx="10" fill="#14243A"/>
+  <rect x="618" y="452" width="50" height="66" rx="10" fill="#14243A"/>
+  <path d="M372 584 V612 M412 584 V612 M452 584 V612 M492 584 V612 M532 584 V612 M572 584 V612 M612 584 V612 M652 584 V612"
+        fill="none" stroke="white" stroke-width="22" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -9,8 +9,9 @@ A macOS menu bar app for real-time memory monitoring and optimization.
 - **Real-time monitoring** — Displays free memory percentage in the menu bar, updated every 2 seconds
 - **One-click optimization** — Flushes inactive cache via `purge` with automatic administrator prompt
 - **Auto-optimization** — Triggers automatically when free memory drops below a configurable threshold (60-second cooldown)
+- **Launch at login** — Registers itself as a login item via `SMAppService` (on by default, toggle in Settings)
 - **Detailed stats** — Shows Used / Cached / Free / Wired / Active / Inactive / Compressed
-- **Multi-language** — Korean / English / Japanese / Chinese
+- **Multi-language** — Korean / English / Chinese / Japanese / Spanish / German / French / Russian / Hindi
 - **No Dock icon** — Pure menu bar app (`LSUIElement = true`)
 
 ## Preview
@@ -54,7 +55,7 @@ make clean      # Remove build artifacts
 ### Manual compile
 
 ```bash
-swiftc -framework AppKit -O Sources/*.swift -o jenaMemory
+swiftc -framework AppKit -framework ServiceManagement -O Sources/*.swift -o jenaMemory
 ```
 
 ## Architecture
@@ -66,6 +67,7 @@ Sources/
 ├── MenuBarController.swift         # NSStatusItem, 2-second timer, menu layout
 ├── MemoryMonitor.swift             # Memory stats via vm_statistics64 Mach API
 ├── PrivilegedExecutor.swift        # Runs purge via NSAppleScript (admin prompt)
+├── LaunchAtLogin.swift             # Login item registration via SMAppService (macOS 13+)
 ├── SettingsWindowController.swift  # Auto-optimize settings, language picker
 ├── AboutWindowController.swift     # About panel with app icon and version
 └── Localization.swift              # Multi-language string management
@@ -90,9 +92,10 @@ Matches the values shown in macOS Activity Monitor.
 
 | Option | Default | Description |
 |--------|---------|-------------|
+| Launch at login | On | Start automatically when you log in (macOS 13+) |
 | Auto-optimize | Off | Runs purge when free memory falls below threshold |
 | Threshold | 1024 MB | Free memory level that triggers auto-optimize |
-| Language | System | Korean / English / Japanese / Chinese |
+| Language | Korean | 9 languages (ko · en · zh · ja · es · de · fr · ru · hi) |
 
 ## License
 

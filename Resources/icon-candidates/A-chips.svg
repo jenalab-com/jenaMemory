@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <mask id="rear-clearance" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="white"/>
+      <rect x="192" y="202" width="656" height="566" rx="126" fill="black"/>
+    </mask>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="188" fill="#14243A"/>
+  <g transform="translate(36 -27)">
+    <g mask="url(#rear-clearance)">
+      <g transform="translate(-45 110) rotate(12 520 485)">
+        <rect x="244" y="254" width="552" height="462" rx="42" fill="white"/>
+      </g>
+    </g>
+    <path d="M500 280 H722 A48 48 0 0 1 770 328 V642 A48 48 0 0 1 722 690 H318 A48 48 0 0 1 270 642 V555"
+          fill="none" stroke="white" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <title>jenaMemory A — three memory chips with pins</title>
+  <rect x="352" y="418" width="96" height="96" rx="14" fill="white"/>
+  <rect x="472" y="418" width="96" height="96" rx="14" fill="white"/>
+  <rect x="592" y="418" width="96" height="96" rx="14" fill="white"/>
+  <path d="M372 560 V600 M420 560 V600 M492 560 V600 M540 560 V600 M612 560 V600 M660 560 V600"
+        fill="none" stroke="white" stroke-width="30" stroke-linecap="round"/>
+  </g>
+</svg>

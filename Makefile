@@ -7,7 +7,7 @@ DMG         = $(BUILD_DIR)/$(APP_NAME)-$(VERSION).dmg
 PKG         = $(BUILD_DIR)/$(APP_NAME)-$(VERSION).pkg
 SOURCES     = $(wildcard Sources/*.swift)
 
-.PHONY: build run install dmg pkg clean
+.PHONY: build run install dmg pkg icon clean
 
 ## 개발용 빌드 + 실행
 run: build
@@ -16,10 +16,10 @@ run: build
 ## .app 번들 빌드
 build: $(BINARY)
 
-$(BINARY): $(SOURCES) Resources/Info.plist
+$(BINARY): $(SOURCES) Resources/Info.plist Resources/$(APP_NAME).icns
 	@mkdir -p $(BUNDLE)/Contents/MacOS
 	@mkdir -p $(BUNDLE)/Contents/Resources
-	swiftc -framework AppKit -O $(SOURCES) -o $(BINARY)
+	swiftc -framework AppKit -framework ServiceManagement -O $(SOURCES) -o $(BINARY)
 	@cp Resources/Info.plist $(BUNDLE)/Contents/Info.plist
 	@[ -f Resources/$(APP_NAME).icns ] && cp Resources/$(APP_NAME).icns $(BUNDLE)/Contents/Resources/$(APP_NAME).icns || true
 	@echo "✓ 빌드 완료: $(BUNDLE)"
@@ -53,6 +53,10 @@ pkg: build
 		--version $(VERSION) \
 		$(PKG)
 	@echo "✓ 패키지 생성: $(PKG)"
+
+## SVG → .icns (사용법: make icon SVG=Resources/icon-candidates/A-chips.svg)
+icon:
+	@./scripts/make-icon.sh "$(SVG)" Resources/$(APP_NAME).icns
 
 ## 빌드 산출물 삭제
 clean:

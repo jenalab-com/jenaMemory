@@ -182,6 +182,64 @@ enum L {
         }
     }
 
+    // MARK: General (launch at login)
+
+    static var generalSection: String {
+        switch current {
+        case .ko: return "일반"
+        case .en: return "General"
+        case .zh: return "通用"
+        case .ja: return "一般"
+        case .es: return "General"
+        case .de: return "Allgemein"
+        case .fr: return "Général"
+        case .ru: return "Основные"
+        case .hi: return "सामान्य"
+        }
+    }
+
+    static var launchAtLogin: String {
+        switch current {
+        case .ko: return "시스템 시작 시 자동 실행"
+        case .en: return "Launch at login"
+        case .zh: return "登录时自动启动"
+        case .ja: return "ログイン時に自動起動"
+        case .es: return "Iniciar al iniciar sesión"
+        case .de: return "Bei Anmeldung starten"
+        case .fr: return "Lancer à l'ouverture de session"
+        case .ru: return "Запускать при входе"
+        case .hi: return "लॉगिन पर स्वतः चालू करें"
+        }
+    }
+
+    static var launchAtLoginApproval: String {
+        switch current {
+        case .ko: return "시스템 설정 > 로그인 항목에서 승인이 필요해요"
+        case .en: return "Approval needed in System Settings > Login Items"
+        case .zh: return "需要在 系统设置 > 登录项 中批准"
+        case .ja: return "システム設定 > ログイン項目 で許可が必要です"
+        case .es: return "Requiere aprobación en Ajustes del Sistema > Ítems de inicio"
+        case .de: return "Freigabe in Systemeinstellungen > Anmeldeobjekte nötig"
+        case .fr: return "Approbation requise dans Réglages Système > Ouverture"
+        case .ru: return "Нужно разрешить в Системных настройках > Объекты входа"
+        case .hi: return "सिस्टम सेटिंग्स > लॉगिन आइटम में अनुमति आवश्यक"
+        }
+    }
+
+    static var openLoginItems: String {
+        switch current {
+        case .ko: return "열기"
+        case .en: return "Open"
+        case .zh: return "打开"
+        case .ja: return "開く"
+        case .es: return "Abrir"
+        case .de: return "Öffnen"
+        case .fr: return "Ouvrir"
+        case .ru: return "Открыть"
+        case .hi: return "खोलें"
+        }
+    }
+
     static var autoOptimizeSection: String {
         switch current {
         case .ko: return "자동 메모리 최적화"
