@@ -10,7 +10,7 @@ final class AboutWindowController: NSWindowController {
     private let updatedRow     = makeRow()
 
     private static let appVersion  = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
-    private static let updatedDate = "2026-03-14"
+    private static let updatedDate = "2026-10-25"
 
     private init() {
         let panel = NSPanel(

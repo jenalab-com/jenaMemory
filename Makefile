@@ -1,5 +1,5 @@
 APP_NAME    = jenaMemory
-VERSION     = 1.0.0
+VERSION     = 1.1.0
 BUILD_DIR   = .build
 BUNDLE      = $(BUILD_DIR)/$(APP_NAME).app
 BINARY      = $(BUNDLE)/Contents/MacOS/$(APP_NAME)
